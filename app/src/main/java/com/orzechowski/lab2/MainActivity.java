@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.view.Menu;
 
 import android.os.Bundle;
@@ -57,5 +58,15 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Bundle data = getIntent().getExtras();
+        if(data!=null) {
+            mModel.insert(new Phones(data.getString("manufacturer"), data.getString("model"),
+                    data.getString("version"), data.getString("website")));
+        }
     }
 }
