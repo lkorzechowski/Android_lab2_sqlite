@@ -14,26 +14,30 @@ import java.util.List;
 public class ElementListAdapter extends RecyclerView.Adapter<ElementListAdapter.ElementViewHolder> {
     private final LayoutInflater mInflater;
     private List<Phones> mElementList;
+    private final OnItemClickListener mOnItemClickListener;
 
     public ElementListAdapter(Context context){
         this.mInflater = LayoutInflater.from(context);
         this.mElementList = null;
+        this.mOnItemClickListener = (OnItemClickListener) context;
     }
 
     @NonNull
     @Override
     public ElementViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View row = mInflater.inflate(R.layout.element_row, null);
-        return new ElementViewHolder(row);
+        return new ElementViewHolder(row, mOnItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ElementListAdapter.ElementViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ElementViewHolder holder, int position) {
+        holder.thisPhone = mElementList.get(position);
+
         TextView text1 = holder.itemView.findViewById(R.id.textView);
         TextView text2 = holder.itemView.findViewById(R.id.textView2);
 
-        text1.setText(mElementList.get(position).getProducent());
-        text2.setText(mElementList.get(position).getModel());
+        text1.setText(holder.thisPhone.getProducent());
+        text2.setText(holder.thisPhone.getModel());
     }
 
     @Override
@@ -47,9 +51,25 @@ public class ElementListAdapter extends RecyclerView.Adapter<ElementListAdapter.
         notifyDataSetChanged();
     }
 
-    public static class ElementViewHolder extends RecyclerView.ViewHolder{
-        public ElementViewHolder(@NonNull View glownyElementWiersza){
+    public static class ElementViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener
+    {
+        OnItemClickListener listenerForRow;
+        Phones thisPhone;
+
+        public ElementViewHolder(@NonNull View glownyElementWiersza, OnItemClickListener listener){
             super(glownyElementWiersza);
+            this.listenerForRow = listener;
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            listenerForRow.onItemClickListener(thisPhone);
+        }
+    }
+
+    interface OnItemClickListener{
+        void onItemClickListener(Phones phone);
     }
 }

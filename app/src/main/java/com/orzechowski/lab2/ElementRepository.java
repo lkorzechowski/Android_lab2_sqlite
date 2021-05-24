@@ -28,4 +28,8 @@ public class ElementRepository {
     void insert(Phones phone){
         ElementRoomDatabase.databaseWriteExecutor.execute(()-> mElementDao.insert(phone));
     }
+
+    void delete(Phones phone){
+        ElementRoomDatabase.databaseWriteExecutor.execute(()-> mElementDao.deleteOne(phone));
+    }
 }
