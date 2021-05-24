@@ -24,11 +24,9 @@ public class ElementViewModel extends AndroidViewModel {
 
     public void deleteAll(){
         mRepository.deleteAll();
-        notifyAll();
     }
 
     public void insert(Phones phone){
         mRepository.insert(phone);
-        notifyAll();
     }
 }

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">lab2</string>
     <string name="menu_clear">Usuń wszystkie dane</string>
+    <string name="fab_main_info">button for adding new records</string>
 </resources>
