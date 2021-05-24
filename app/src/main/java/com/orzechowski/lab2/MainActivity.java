@@ -5,10 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.view.Menu;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
     private ElementViewModel mModel;
@@ -27,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
         mModel = new ViewModelProvider(this).get(ElementViewModel.class);
         mModel.getAllElements().observe(this, elements -> {
             mAdapter.setElementList(elements);
+        });
+
+        FloatingActionButton linkToAdd = findViewById(R.id.fabmain);
+        linkToAdd.setOnClickListener(v -> {
+            Intent add = new Intent(MainActivity.this, AddPhone.class);
+            startActivity(add);
         });
     }
 

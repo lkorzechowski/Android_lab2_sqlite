@@ -2,4 +2,10 @@
     <string name="app_name">lab2</string>
     <string name="menu_clear">Usuń wszystkie dane</string>
     <string name="fab_main_info">button for adding new records</string>
+    <string name="website">Website</string>
+    <string name="android_version">Android version</string>
+    <string name="model">Model</string>
+    <string name="manufacturer">Manufacturer</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>
