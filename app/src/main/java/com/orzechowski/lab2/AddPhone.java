@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -38,15 +37,19 @@ public class AddPhone extends AppCompatActivity {
             String website = InputWebsite.getText().toString();
 
             if(manufacturer.length()<1){
+                InputManufacturer.setError("no manufacturer given");
                 Toast.makeText(this, "Insert a manufacturer", Toast.LENGTH_LONG).show();
             }
             else if(model.length()<1){
+                InputModel.setError("no model provided");
                 Toast.makeText(this, "Insert a model", Toast.LENGTH_LONG).show();
             }
             else if(version.length()<1){
+                InputVersion.setError("no version provided");
                 Toast.makeText(this, "Insert Android version", Toast.LENGTH_LONG).show();
             }
             else if(website.length()<1){
+                InputWebsite.setError("no website given");
                 Toast.makeText(this, "Insert a website", Toast.LENGTH_LONG).show();
             }
             else{

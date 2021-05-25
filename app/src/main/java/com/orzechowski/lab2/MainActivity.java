@@ -2,7 +2,6 @@ package com.orzechowski.lab2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,14 +34,10 @@ public class MainActivity extends AppCompatActivity
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
         mModel = new ViewModelProvider(this).get(ElementViewModel.class);
-        mModel.getAllElements().observe(this, elements -> {
-            mAdapter.setElementList(elements);
-        });
+        mModel.getAllElements().observe(this, elements -> mAdapter.setElementList(elements));
 
         FloatingActionButton linkToAdd = findViewById(R.id.fabmain);
-        linkToAdd.setOnClickListener(v -> {
-            startActivity(add);
-        });
+        linkToAdd.setOnClickListener(v -> startActivity(add));
 
         ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper
                 .SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT)
