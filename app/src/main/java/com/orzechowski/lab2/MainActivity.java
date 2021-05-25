@@ -2,6 +2,7 @@ package com.orzechowski.lab2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,11 +21,13 @@ public class MainActivity extends AppCompatActivity
 {
     private ElementViewModel mModel;
     private ElementListAdapter mAdapter;
+    private Intent add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        add = new Intent(MainActivity.this, AddPhone.class);
 
         RecyclerView recycler = findViewById(R.id.recycler);
         mAdapter = new ElementListAdapter(this);
@@ -38,7 +41,6 @@ public class MainActivity extends AppCompatActivity
 
         FloatingActionButton linkToAdd = findViewById(R.id.fabmain);
         linkToAdd.setOnClickListener(v -> {
-            Intent add = new Intent(MainActivity.this, AddPhone.class);
             startActivity(add);
         });
 
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                //delete
+                mModel.delete(mModel.getAllElements().getValue().remove(viewHolder.getAdapterPosition()));
             }
         };
 
@@ -86,13 +88,28 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         Bundle data = getIntent().getExtras();
         if(data!=null) {
-            mModel.insert(new Phones(data.getString("manufacturer"), data.getString("model"),
-                    data.getString("version"), data.getString("website")));
+            Phones obtainedPhone = new Phones(data.getString("manufacturer"),
+                    data.getString("model"), data.getString("version"),
+                    data.getString("website"));
+
+            if(!data.getBoolean("editing")) {
+                mModel.insert(obtainedPhone);
+            } else {
+                obtainedPhone.setId(data.getLong("id"));
+                mModel.update(obtainedPhone);
+            }
         }
     }
 
     @Override
     public void onItemClickListener(Phones phone) {
-
+        Bundle bundle = new Bundle();
+        bundle.putLong("id", phone.getId());
+        bundle.putString("manufacturer", phone.getProducent());
+        bundle.putString("model", phone.getModel());
+        bundle.putString("version", phone.getWersja());
+        bundle.putString("website", phone.getStrona());
+        add.putExtras(bundle);
+        startActivity(add);
     }
 }

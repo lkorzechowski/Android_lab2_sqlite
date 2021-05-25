@@ -10,7 +10,10 @@ import android.widget.Toast;
 
 public class AddPhone extends AppCompatActivity {
 
-    Intent back;
+    private Intent back;
+    private EditText InputManufacturer, InputModel, InputVersion, InputWebsite;
+    private boolean editing;
+    private Bundle data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,11 +21,12 @@ public class AddPhone extends AppCompatActivity {
         setContentView(R.layout.activity_add_phone);
 
         back = new Intent(this, MainActivity.class);
+        editing = false;
 
-        EditText InputManufacturer = findViewById(R.id.manufactorer_input);
-        EditText InputModel = findViewById(R.id.model_input);
-        EditText InputVersion = findViewById(R.id.version_input);
-        EditText InputWebsite = findViewById(R.id.website_input);
+        InputManufacturer = findViewById(R.id.manufactorer_input);
+        InputModel = findViewById(R.id.model_input);
+        InputVersion = findViewById(R.id.version_input);
+        InputWebsite = findViewById(R.id.website_input);
 
         Button submit = findViewById(R.id.save_button);
         submit.setOnClickListener(v -> {
@@ -49,6 +53,14 @@ public class AddPhone extends AppCompatActivity {
                 toMain.putString("model", model);
                 toMain.putString("version", version);
                 toMain.putString("website", website);
+                toMain.putBoolean("editing", editing);
+
+                if(editing){
+                    getIntent().getExtras();
+                    long id = data.getLong("id");
+                    toMain.putLong("id", id);
+                }
+
                 back.putExtras(toMain);
                 startActivity(back);
             }
@@ -56,5 +68,18 @@ public class AddPhone extends AppCompatActivity {
 
         Button cancel = findViewById(R.id.cancel_button);
         cancel.setOnClickListener(v -> startActivity(back));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        data = getIntent().getExtras();
+        if(data != null) {
+            InputManufacturer.setText(data.getString("manufacturer"));
+            InputModel.setText(data.getString("model"));
+            InputVersion.setText(data.getString("version"));
+            InputWebsite.setText(data.getString("website"));
+            editing = true;
+        } else editing = false;
     }
 }
