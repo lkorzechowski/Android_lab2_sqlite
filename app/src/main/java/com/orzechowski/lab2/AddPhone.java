@@ -3,7 +3,9 @@ package com.orzechowski.lab2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -68,6 +70,14 @@ public class AddPhone extends AppCompatActivity {
 
         Button cancel = findViewById(R.id.cancel_button);
         cancel.setOnClickListener(v -> startActivity(back));
+
+        Button web = findViewById(R.id.website_button);
+
+        web.setOnClickListener(v -> {
+            String url = InputWebsite.getText().toString();
+            if (!url.startsWith("https://") && !url.startsWith("http://")) url = "http://" + url;
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        });
     }
 
     @Override
